@@ -1,5 +1,5 @@
 from .rule_pipe_validator import RulePipeValidator as RPV
-
+from validator.rules_src.nullable import Nullable
 
 class RulesWrapper:
     def __init__(self, request, rules):
@@ -21,6 +21,15 @@ class RulesWrapper:
                 data = None
             else:
                 data = self.request[key]
+
+            # check if this request is nullable
+            nullable_index = next((index for index, item in enumerate(rules) if isinstance(item, Nullable)), None)
+            if nullable_index is not None:
+                nullable_class: Nullable = rules[nullable_index]
+                result = nullable_class.check(data)
+                if result is True:
+                    self.validated_data[key] = data
+                    continue
 
             # Interface for rules
             rpv = RPV(data, rules, self)
