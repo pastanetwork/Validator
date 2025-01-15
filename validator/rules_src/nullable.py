@@ -29,7 +29,6 @@ class Nullable(Rule):
         Rule.__init__(self)
 
     def check(self, arg):
-        # Allow None values (nullable)
         if arg is None:
             return True
 

@@ -25,10 +25,12 @@ class RulesWrapper:
             nullable_index = next((index for index, item in enumerate(rules) if item.class_name == 'Nullable'), None)
             if nullable_index is not None:
                 nullable_class = rules[nullable_index]
-                result = nullable_class.check(data)
-                if result is True:
+                result_nullable = nullable_class.check(data)
+                if result_nullable is True:
                     self.validated_data[key] = data
                     continue
+                else:
+                    del rules[nullable_index]
 
             # Interface for rules
             rpv = RPV(data, rules, self)
