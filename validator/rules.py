@@ -22,6 +22,7 @@ from validator.rules_src.mail import *
 from validator.rules_src.max import *
 from validator.rules_src.min import *
 from validator.rules_src.nullable import *
+from validator.rules_src.numeric import *
 from validator.rules_src.octal import *
 from validator.rules_src.regex import *
 from validator.rules_src.required import *
