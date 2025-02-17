@@ -28,3 +28,4 @@ def test_nullable_and_other_rules():
     # Combining Nullable with other rules (example with integer validation)
     assert validate({"val": None}, {"val": "nullable|integer"})  # None is allowed
     assert validate({"val": 123}, {"val": "nullable|integer"})  # Valid integer is allowed
+    assert not validate({"val": "hg"}, {"val": "nullable|integer"})

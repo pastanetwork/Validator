@@ -31,13 +31,7 @@ class Nullable(Rule):
     def check(self, arg):
         if arg is None:
             return True
-
-        # Check for empty values
-        if hasattr(arg, "__len__") and len(arg) == 0:
-            self.set_error("Field was empty")
-            return False
-
-        return True
+        return False
 
     def __from_str__(self):
         pass
