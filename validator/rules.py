@@ -6,6 +6,7 @@ from validator.rules_src.base32 import *
 from validator.rules_src.base64 import *
 from validator.rules_src.between import *
 from validator.rules_src.binary import *
+from validator.rules_src.boolean import *
 from validator.rules_src.date import *
 from validator.rules_src.decimal import *
 from validator.rules_src.dict import *
