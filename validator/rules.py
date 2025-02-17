@@ -10,6 +10,8 @@ from validator.rules_src.boolean import *
 from validator.rules_src.date import *
 from validator.rules_src.decimal import *
 from validator.rules_src.dict import *
+from validator.rules_src.digits import *
+from validator.rules_src.digits_between import *
 from validator.rules_src.hex import *
 from validator.rules_src.in_rule import *
 from validator.rules_src.integer import *
