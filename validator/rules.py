@@ -2,6 +2,8 @@ from validator.rules_src import Rule
 from validator.rules_src import __all__, rules_with_args
 from validator.rules_src.accepted import *
 from validator.rules_src.alpha import *
+from validator.rules_src.alpha_dash import *
+from validator.rules_src.alpha_num import *
 from validator.rules_src.base32 import *
 from validator.rules_src.base64 import *
 from validator.rules_src.between import *
