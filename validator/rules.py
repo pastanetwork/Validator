@@ -10,6 +10,7 @@ from validator.rules_src.date import *
 from validator.rules_src.decimal import *
 from validator.rules_src.dict import *
 from validator.rules_src.hex import *
+from validator.rules_src.in_rule import *
 from validator.rules_src.integer import *
 from validator.rules_src.ip import *
 from validator.rules_src.ipv4 import *

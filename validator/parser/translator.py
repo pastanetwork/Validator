@@ -107,11 +107,12 @@ class Translator:
         init_rule = R.__all__[class_str]
 
         # Check for arguments count
-        if not self._validate_args_count(init_rule, args):
+        is_list = self._check_args_is_list(init_rule)
+        if not is_list and not self._validate_args_count(init_rule, args):
             raise exc.ArgsCountError
 
         # Initialize Rule class
-        rule_instance = init_rule(*args)
+        rule_instance = init_rule(args) if is_list else init_rule(*args) # Since the new 'in' rules require us to check if the first argument expects a list, we now directly pass a list when needed.
         rule_instance.__from_str__()
 
         return rule_instance
@@ -141,6 +142,12 @@ class Translator:
         func_rule = R.Rule()
         func_rule.override_check(elem)
         return func_rule
+
+    def _check_args_is_list(self, init_rule) -> bool:
+        a = inspect.getfullargspec(init_rule)
+        if len(a.annotations) == 1 and a.annotations.get(next(iter(a.annotations))) == list:
+            return True
+        return False
 
     def _validate_args_count(self, init_rule, args):
         a = inspect.getfullargspec(init_rule)
