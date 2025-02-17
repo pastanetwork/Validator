@@ -19,6 +19,8 @@ class String(Rule):
     False
     """
 
+    aliases = ["str"]
+
     def __init__(self):
         Rule.__init__(self)
 

@@ -23,6 +23,8 @@ class Integer(Rule):
     False
     """
 
+    aliases = ["int"]
+
     def __init__(self):
         Rule.__init__(self)
 
