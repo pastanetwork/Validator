@@ -34,6 +34,7 @@ from validator.rules_src.required_if import *
 from validator.rules_src.same import *
 from validator.rules_src.size import *
 from validator.rules_src.string import *
+from validator.rules_src.url import *
 from validator.rules_src.uuidv1 import *
 from validator.rules_src.uuidv3 import *
 from validator.rules_src.uuidv4 import *

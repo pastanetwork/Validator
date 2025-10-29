@@ -70,6 +70,8 @@
             <a href="#Octal">Octal</a>
         </td><td>
             <a href="#Size">Size</a>
+        </td><td>
+            <a href="#URL">URL</a>
         </td>
     </tr>
     
@@ -687,6 +689,37 @@ False
 ```
 Aliases:
 ['string']
+
+<a name="URL" />
+
+#### URL
+
+The field under validation must be a valid URL
+```python
+>>> from validator import validate
+
+>>> reqs = {"website" : "https://www.example.com"}
+>>> rule = {"website" : "url"}
+>>> validate(reqs, rule)
+True
+
+>>> reqs = {"website" : "http://example.com/path?query=value"}
+>>> rule = {"website" : "url"}
+>>> validate(reqs, rule)
+True
+
+>>> reqs = {"website" : "http://localhost:8080"}
+>>> rule = {"website" : "url"}
+>>> validate(reqs, rule)
+True
+
+>>> reqs = {"website" : "not a url"}
+>>> rule = {"website" : "url"}
+>>> validate(reqs, rule)
+False
+```
+Aliases:
+['url']
 
 <a name="UUIDv1" />
 
