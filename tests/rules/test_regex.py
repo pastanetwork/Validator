@@ -44,3 +44,20 @@ def test_regex_03_string():
     assert not validate({"val": "groy"}, {"val": "regex:gr[ae]y"})
 
     assert not validate({"val": "xyzabc"}, {"val": "regex:xyz$"})
+
+
+def test_regex_04_with_commas():
+    """Test regex patterns containing commas"""
+    # Pattern with comma should not be split
+    assert validate({"val": "1,2,3"}, {"val": "regex:^\\d+(,\\d+)*$"})
+
+    assert validate({"val": "123"}, {"val": "regex:^\\d+(,\\d+)*$"})
+
+    assert not validate({"val": "1,2,a"}, {"val": "regex:^\\d+(,\\d+)*$"})
+
+    assert not validate({"val": "abc"}, {"val": "regex:^\\d+(,\\d+)*$"})
+
+    # Combined with other rules
+    assert validate({"val": "1,2,3"}, {"val": "nullable|string|regex:^\\d+(,\\d+)*$"})
+
+    assert validate({"val": None}, {"val": "nullable|string|regex:^\\d+(,\\d+)*$"})

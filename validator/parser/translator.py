@@ -92,8 +92,12 @@ class Translator:
             # extract rule_name and arguments from string
             class_str, args_str = elem.split(target_char, 1)
             class_str = class_str.lower()
-            # Split arguments into array
-            args = args_str.split(target_args)
+            # Special handling for regex rule - don't split on commas
+            if class_str == "regex":
+                args = [args_str]
+            else:
+                # Split arguments into array
+                args = args_str.split(target_args)
         else:
             class_str = elem.lower()
 
