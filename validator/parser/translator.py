@@ -65,10 +65,13 @@ class Translator:
                 ]
             )
             rules = rules_with_args + rules_no_args
+            # empty segments are ignored (e.g. `required||string`), without touching a pipe inside a regex
+            value = re.sub(f"^\\|+(?={rules})", "", self.value)
+            value = re.sub(f"\\|{{2,}}(?={rules})", "|", value)
             # pattern group 1: finds all `regex:` rules
             # pattern group 2: finds all other rules
             pattern = f"((?:(?<=^)|(?<=\|))regex:.+?(?:(?=\|(?={rules}))|(?=$))|(?:(?<=^)|(?<=\|)).+?(?:(?=\|)|(?=$)))"
-            return re.findall(pattern, self.value)
+            return re.findall(pattern, value)
 
         # if value is array return
         if isinstance(self.value, list):

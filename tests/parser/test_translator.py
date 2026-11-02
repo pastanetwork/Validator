@@ -1,3 +1,4 @@
+from validator import validate
 from validator.parser.translator import Translator
 from validator import rules as R
 from validator import exceptions as exc
@@ -322,3 +323,22 @@ def test_bad_03():
     with pytest.raises(AttributeError):
         target_str = [R.Requireds()]
         Translator(target_str).translate()
+
+
+def test_empty_segments_are_ignored():
+    assert validate({"val": "x"}, {"val": "required||string"})
+    assert validate({"val": "x"}, {"val": "|required|string"})
+    assert validate({"val": "x"}, {"val": "required|||string|"})
+    assert not validate({"val": ""}, {"val": "required||string"})
+
+
+def test_empty_segment_before_a_regex():
+    rule = r"required||regex:/^([\w\d._-]+)(\.jar)$/|max:50"
+    assert validate({"val": "server.jar"}, {"val": rule})
+    assert not validate({"val": "server"}, {"val": rule})
+    assert not validate({"val": "a" * 50 + ".jar"}, {"val": rule})
+
+
+def test_double_pipe_inside_a_regex_is_kept():
+    assert validate({"val": "a"}, {"val": "regex:^(a||b)$"})
+    assert validate({"val": ""}, {"val": "regex:^(a||b)$"})
