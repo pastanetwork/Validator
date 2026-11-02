@@ -32,6 +32,11 @@ class RulesWrapper:
                 else:
                     del rules[nullable_index]
 
+                # an empty string counts as no value, unless the field is also required
+                if data == "" and not any(item.class_name == "Required" for item in rules):
+                    self.validated_data[key] = data
+                    continue
+
             # Interface for rules
             rpv = RPV(data, rules, self)
             rpv_result = rpv.execute()
