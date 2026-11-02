@@ -533,6 +533,13 @@ True
 >>> rule = {"value" : "regex:^[0-9a-zA-Z]*$"}
 >>> validate(reqs, rule)
 False
+
+The pattern may be delimited by slashes, with optional flags (i, m, s, x, u), as in Laravel rules:
+
+>>> reqs = {"value" : "PythonValidator"}
+>>> rule = {"value" : "regex:/^pythonvalidator$/i"}
+>>> validate(reqs, rule)
+True
 ```
 Aliases:
 ['regex']

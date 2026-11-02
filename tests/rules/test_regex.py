@@ -61,3 +61,33 @@ def test_regex_04_with_commas():
     assert validate({"val": "1,2,3"}, {"val": "nullable|string|regex:^\\d+(,\\d+)*$"})
 
     assert validate({"val": None}, {"val": "nullable|string|regex:^\\d+(,\\d+)*$"})
+
+
+def test_regex_delimited():
+    assert validate({"val": "server.jar"}, {"val": r"required|regex:/^([\w\d._-]+)(\.jar)$/"})
+    assert not validate({"val": "bad name"}, {"val": r"required|regex:/^([\w\d._-]+)(\.jar)$/"})
+    assert validate({"val": "a/b"}, {"val": r"regex:/^a\/b$/"})
+
+
+def test_regex_delimited_flags():
+    assert validate({"val": "FOO"}, {"val": "regex:/^foo$/i"})
+    assert not validate({"val": "FOO"}, {"val": "regex:/^foo$/"})
+    assert validate({"val": "a\nb"}, {"val": "regex:/^b$/m"})
+
+
+def test_regex_delimited_with_comma_and_pipe():
+    assert validate({"val": "1,2"}, {"val": r"nullable|string|regex:/^\d+(,\d+)*$/"})
+    assert not validate({"val": "a"}, {"val": r"nullable|string|regex:/^\d+(,\d+)*$/"})
+    assert validate({"val": "b"}, {"val": "regex:/^(a|b)$/|max:5"})
+    assert not validate({"val": "bbbbbbb"}, {"val": "regex:/^(a|b+)$/|max:5"})
+
+
+def test_regex_not_delimited_is_unchanged():
+    assert Regex("/foo").check("/foo")
+    assert Regex("/foo/bar").check("/foo/bar")
+    assert not Regex("/foo/z").check("foo")
+
+
+def test_regex_refuses_a_value_that_is_not_text():
+    assert not validate({"val": 12}, {"val": "regex:^12$"})
+    assert not validate({"val": None}, {"val": "regex:^12$"})
