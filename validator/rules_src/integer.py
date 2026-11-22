@@ -1,13 +1,14 @@
+import re
+
 from validator.rules_src import Rule
-from validator.rules_src.binary import Binary
-from validator.rules_src.octal import Octal
-from validator.rules_src.decimal import Decimal
-from validator.rules_src.hex import Hex
+
+# An optional sign and ASCII digits; surrounding spaces are tolerated. Other bases have their own rules (Binary, Octal, Hex).
+_BASE_10 = re.compile(r"\s*[+-]?[0-9]+\s*")
 
 
 class Integer(Rule):
     """
-    The field under validation must be an Integer
+    The field under validation must be a base-10 Integer (use Binary, Octal or Hex for other bases)
 
     Examples:
     >>> from validator import validate
@@ -18,6 +19,11 @@ class Integer(Rule):
     True
 
     >>> reqs = {"num" : "value"}
+    >>> rule = {"num" : "integer"}
+    >>> validate(reqs, rule)
+    False
+
+    >>> reqs = {"num" : "0x1f"}
     >>> rule = {"num" : "integer"}
     >>> validate(reqs, rule)
     False
@@ -36,23 +42,21 @@ class Integer(Rule):
             self.set_error(f"Expected Type of Int or Str, Got: {type(arg)}")
             return False
 
-        try:
-            _ = Integer.convert(arg)
-            return True
-        except:
-            self.set_error(f"Expected String to be in Binary format, Got: {arg}")
+        if _BASE_10.fullmatch(arg) is None:
+            self.set_error(f"Expected String to be a base-10 integer, Got: {arg}")
             return False
+
+        return True
 
     @staticmethod
     def convert(val):
-        convert_funcs = [Decimal.convert, Binary.convert, Octal.convert, Hex.convert]
-        for func in convert_funcs:
-            try:
-                return func(val)
-            except:
-                pass
+        if isinstance(val, int):
+            return val
 
-        raise Exception("Couldn't convert number to any of numeric system", val)
+        if isinstance(val, str) and _BASE_10.fullmatch(val) is not None:
+            return int(val.strip(), 10)
+
+        raise ValueError(f"Expected a base-10 integer, Got: {val}")
 
     def __from_str__(self):
         pass

@@ -92,3 +92,37 @@ def test_integer_06_string():
     assert not validate({"val": [123, 5]}, {"val": "integer"})
 
     assert not validate({"val": 2.3}, {"val": "integer"})
+
+
+def test_integer_05_base_10_only():
+    assert not Integer().check("ff")
+
+    assert not Integer().check("abc")
+
+    assert not Integer().check("a")
+
+    assert not Integer().check("0x1f")
+
+    assert not Integer().check("0b101")
+
+    assert not Integer().check("0o17")
+
+    assert not Integer().check("1e3")
+
+    assert not Integer().check("1_000")
+
+    assert not Integer().check("٣")
+
+    assert Integer().check(" 7 ")
+
+    assert Integer().check("+12")
+
+
+def test_integer_06_bounds_use_the_base_10_value():
+    assert not validate({"val": "a"}, {"val": "integer|between:1,64"})
+
+    assert validate({"val": "64"}, {"val": "integer|between:1,64"})
+
+    assert not validate({"val": "65"}, {"val": "integer|between:1,64"})
+
+    assert validate({"val": "010"}, {"val": "integer|max:10"})

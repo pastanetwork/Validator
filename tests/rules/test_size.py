@@ -1,5 +1,8 @@
 from validator.rules import Size
 from validator.rules import Integer
+from validator.rules import Binary
+from validator.rules import Octal
+from validator.rules import Hex
 from validator.rules import List
 from validator.rule_pipe_validator import RulePipeValidator as RPV
 from validator import validate
@@ -32,16 +35,16 @@ def test_size_02():
 
 
 def test_size_03_rpv():
-    rpv = RPV(data="0b01011001", rules=[Integer(), Size(89)])
+    rpv = RPV(data="0b01011001", rules=[Binary(), Size(89)])
     assert rpv.execute()
 
-    rpv = RPV(data="0o113356", rules=[Integer(), Size(38638)])
+    rpv = RPV(data="0o113356", rules=[Octal(), Size(38638)])
     assert rpv.execute()
 
     rpv = RPV(data="12313", rules=[Integer(), Size(12313)])
     assert rpv.execute()
 
-    rpv = RPV(data="0x1f", rules=[Integer(), Size(31)])
+    rpv = RPV(data="0x1f", rules=[Hex(), Size(31)])
     assert rpv.execute()
 
     rpv = RPV(data=[1, 2, 3], rules=[List(), Size(3)])
