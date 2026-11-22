@@ -4,6 +4,7 @@ from validator.rules_src.binary import Binary
 from validator.rules_src.octal import Octal
 from validator.rules_src.decimal import Decimal
 from validator.rules_src.hex import Hex
+from validator.rules_src.numeric import Numeric
 from validator.rules_src.string import String
 from validator.rules_src.list import List
 from validator.rules_src.dict import Dict
@@ -99,6 +100,8 @@ class Size(Integer, List):
                 return Decimal.convert(arg)
             elif Hex in rpv:
                 return Hex.convert(arg)
+            elif Numeric in rpv:
+                return Numeric.convert(arg)
             elif String in rpv:
                 return len(arg)
             elif List in rpv:

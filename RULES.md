@@ -430,10 +430,18 @@ Aliases:
 #### Mail
 
 The field under validation must be formatted as an e-mail address
+
+The local part may use the usual characters and single dots (64 characters at most), the domain has at least two
+labels and ends with an alphabetic top-level domain of two characters or more (254 characters at most in total).
 ```python
 >>> from validator import validate
 
 >>> reqs = {"email_addr" : "abcd@ef.gh"}
+>>> rule = {"email_addr" : "mail"}
+>>> validate(reqs, rule)
+True
+
+>>> reqs = {"email_addr" : "first.last@mail.example.info"}
 >>> rule = {"email_addr" : "mail"}
 >>> validate(reqs, rule)
 True
@@ -625,7 +633,8 @@ The field under validation must have a size matching the given value.
 * For string data, value corresponds to the number of characters.
 
 * For numeric data, value corresponds to a given integer value. The attribute must also have any of the number rules: decimal, binary, octal, hex.
-If Integer rule is given it checks for all four systems with given order
+If Integer rule is given it checks for all four systems with given order. If Numeric rule is given, the value is compared as a
+number, decimals included
 
 * For collectons, size corresponds to the len() of the given argument. It works for: String, List, Dict, JSON
 ```python

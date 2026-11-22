@@ -54,5 +54,14 @@ class Numeric(Rule):
             self.set_error(f"Expected String to be in Binary format, Got: {arg}")
             return False
 
+    @staticmethod
+    def convert(val):
+        if isinstance(val, (int, float)) and not isinstance(val, bool):
+            return val
+        converted = float(val)
+        if math.isnan(converted):
+            raise ValueError(f"Expected a number, Got: {val}")
+        return converted
+
     def __from_str__(self):
         pass
